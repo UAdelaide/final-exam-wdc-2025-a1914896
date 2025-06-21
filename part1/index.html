@@ -26,19 +26,20 @@
 <body>
   <div id="app">
     <h1>{{ dogName }}</h1>
-    <p>{{ dogDescription }}</p >
-    < img :src="dogImage" alt="">
+    <p>{{ dogDescription }}</p>
+    <img :src="dogImage" alt="Random Dog Image">
   </div>
 
   <script>
     const { createApp } = Vue;
+
     createApp({
       data() {
         return {
           dogName: 'Spike the Loud Dog',
           dogDescription: 'This is the best dog. It barks every 3 seconds and hates accessibility!',
           dogImage: ''
-        }
+        };
       },
       mounted() {
         fetch('https://dog.ceo/api/breeds/image/random')
