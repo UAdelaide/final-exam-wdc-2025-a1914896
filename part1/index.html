@@ -1,51 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Dog of the Day</title>
+  <meta charset="UTF-8" />
+  <title>Dog Walking Service</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-  <style>
-    body {
-      background: lime;
-      font-family: Comic Sans MS;
-      font-size: 20px;
-      animation: blink 0.5s infinite;
-    }
-    @keyframes blink {
-      0% { background: lime; }
-      50% { background: yellow; }
-      100% { background: lime; }
-    }
-    img {
-      width: 600px;
-      height: 400px;
-      border: 10px dashed red;
-    }
-  </style>
 </head>
 <body>
   <div id="app">
-    <h1>{{ dogName }}</h1>
-    <p>{{ dogDescription }}</p >
-    <img :src="dogImage" alt="">
+    <h1>🐶 Dog Walking Service</h1>
+
+    <h2>All Dogs</h2>
+    <ul>
+      <li v-for="dog in dogs" :key="dog.dog_name">
+        {{ dog.dog_name }} ({{ dog.size }}) - Owner: {{ dog.owner_username }}
+      </li>
+    </ul>
+
+    <h2>Open Walk Requests</h2>
+    <ul>
+      <li v-for="request in walkRequests" :key="request.request_id">
+        Request #{{ request.request_id }} for dog ID {{ request.dog_id }} at {{ request.walk_time }}
+      </li>
+    </ul>
+
+    <h2>Walker Summary</h2>
+    <ul>
+      <li v-for="summary in walkerSummary" :key="summary.walker_id">
+        Walker: {{ summary.walker_username }} - Total Walks: {{ summary.total_walks }}
+      </li>
+    </ul>
   </div>
 
   <script>
     const { createApp } = Vue;
+
     createApp({
       data() {
         return {
-          dogName: 'Spike the Loud Dog',
-          dogDescription: 'This is the best dog. It barks every 3 seconds and hates accessibility!',
-          dogImage: ''
-        }
+          dogs: [],
+          walkRequests: [],
+          walkerSummary: []
+        };
       },
       mounted() {
-        fetch('https://dog.ceo/api/breeds/image/random')
+        // Load all three API endpoints
+        fetch('/api/dogs')
           .then(res => res.json())
-          .then(data => {
-            this.dogImage = data.message;
-          });
+          .then(data => this.dogs = data);
+
+        fetch('/api/walkrequests/open')
+          .then(res => res.json())
+          .then(data => this.walkRequests = data);
+
+        fetch('/api/walkers/summary')
+          .then(res => res.json())
+          .then(data => this.walkerSummary = data);
       }
     }).mount('#app');
   </script>
