@@ -1,13 +1,13 @@
 const express = require('express');
 const app = express();
 const dogsRouter = require('./routes/dogs');
-const walkrequestsRouter = require('./routes/walkrequests');
+const walkRequestsRouter = require('./routes/walkrequests');
 const db = require('./db');
 
 app.use(express.json());
 
 app.use('/api/dogs', dogsRouter);
-app.use('/api/walkrequests', walkrequestsRouter);
+app.use('/api/walkrequests', walkRequestsRouter); // 👈 加上这一行
 
 const PORT = 8080;
 app.listen(PORT, () => {
