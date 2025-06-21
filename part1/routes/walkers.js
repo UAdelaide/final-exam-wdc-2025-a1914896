@@ -2,19 +2,19 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
-// GET /api/walkers/summary
-router.get('/summary', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const [rows] = await db.query(`
-      SELECT Walkers.username, COUNT(*) AS total_walks
-      FROM Walks
-      JOIN Walkers ON Walks.walker_id = Walkers.walker_id
-      GROUP BY Walks.walker_id
+      SELECT u.username AS walker_username,
+             0 AS total_ratings,
+             NULL AS average_rating,
+             0 AS completed_walks
+      FROM Users u
+      WHERE u.role = 'walker'
     `);
     res.json(rows);
   } catch (err) {
-    console.error('Error fetching walker summary:', err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Database error' });
   }
 });
 
