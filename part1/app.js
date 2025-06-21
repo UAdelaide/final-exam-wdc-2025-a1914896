@@ -7,7 +7,7 @@ const db = require('./db');
 app.use(express.json());
 
 app.use('/api/dogs', dogsRouter);
-app.use('/api/walkrequests', walkRequestsRouter); // ← 新增的路由注册
+app.use('/api/walkrequests', walkRequestsRouter); // ✅ 注册新路由
 
 const PORT = 8080;
 app.listen(PORT, () => {
